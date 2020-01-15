@@ -12,78 +12,71 @@ RSpec.describe Board do
 end
 
 RSpec.describe Game do
-  describe "#play" do
+  describe "#get_ans" do
+    it "gets input from player" do
+      game = Game.new
+      expect(game.get_ans('☺')).to eql('5')
+    end
     it "asks correct user for input" do
       game = Game.new
       game.round = 1
-      expect{game.play}.to output("Player ☺: select a column\n").to_stdout
+      expect{game.get_ans('☺')}.to output("Player ☺: select a column\n").to_stdout
     end
     it "asks correct user for input" do
       game = Game.new
       game.round = 2
-      expect{game.play}.to output("Player ☻: select a column\n").to_stdout
-    end
-    it "gets and sets input from player" do
-      game = Game.new
-      game.play
-      allow($stdin).to receive(:gets).and_return('2')
-      ans = $stdin.gets
-      expect(game.board.row1[1]).to eql('☺')
-    end
-    it "gets and sets input from player" do
-      game = Game.new
-      game.play
-      game.ans = '3'
-      expect(game.board.row1[2]).to eql('☺')
+      expect{game.get_ans('☻')}.to output("Player ☻: select a column\n").to_stdout
     end
   end
 
-end
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-=begin
-    describe '#draw' do
-    it "prints out current board in terminal" do
-      board = Board.new
-      expect{board.draw}.to output("☐ ☐ ☐ ☐ ☐ ☐ ☐\n☐ ☐ ☐ ☐ ☐ ☐ ☐\n☐ ☐ ☐ ☐ ☐ ☐ ☐\n☐ ☐ ☐ ☐ ☐ ☐ ☐\n☐ ☐ ☐ ☐ ☐ ☐ ☐\n☐ ☐ ☐ ☐ ☐ ☐ ☐\n1 2 3 4 5 6 7\n").to_stdout
-    end
-    it "prints out current board in terminal" do
-      board = Board.new
-      board.row1 = ['☻','☐','☐','☐','☐','☐','☐']
-      expect{board.draw}.to output("☐ ☐ ☐ ☐ ☐ ☐ ☐\n☐ ☐ ☐ ☐ ☐ ☐ ☐\n☐ ☐ ☐ ☐ ☐ ☐ ☐\n☐ ☐ ☐ ☐ ☐ ☐ ☐\n☐ ☐ ☐ ☐ ☐ ☐ ☐\n☻ ☐ ☐ ☐ ☐ ☐ ☐\n1 2 3 4 5 6 7\n").to_stdout
-    end
-  end
-end
-
-RSpec.describe Game do
   describe "#play" do
-    it "prompts the player to choose a column" do
+    it "sets piece on board from player input" do
       game = Game.new
-      expect{game.play}.to output("Player ☺: choose your column\n").to_stdout
+      game.ans = '5'
+      game.play
+      expect(game.board.column5[0]).to eql('☺')
     end
-    it "sets the correct row variable" do
+   
+    it "starts stacking pieces if lower row has piece" do
       game = Game.new
-      expect(game.row1).to eql(['☺','☐','☐','☐','☐','☐','☐'])
+      game.board.column1[0] = '☺'
+      game.play('1', 1)
+      expect(game.board.column1[1]).to eql('☺')
+    end
+    it "doesn't allow you to overfill the column" do
+      game = Game.new
+      game.board.column1 = ['☺', '☻', '☺', '☻', '☺', '☻']
+      expect{game.play('1', 7)}.to output("Please enter a valid choice\n").to_stdout
     end
   end
-=end
-  
+
+  describe "#game_over?" do
+    it "returns false if no one got 4 in a row" do
+      game = Game.new
+      expect(game.game_over?).to eql(false)
+    end
+    it "returns true if someone got 4 in a row verticaly" do
+      game = Game.new
+      game.board.column1 = ['☻','☻','☻','☻','☻','☻']
+      expect(game.game_over?).to eql(true)
+    end
+    it "returns true if someone got 4 in a row horizontaly" do
+      game = Game.new
+      game.board.column1[0] = '☻'
+      game.board.column2[0] = '☻'
+      game.board.column3[0] = '☻' 
+      game.board.column4[0] = '☻'
+      expect(game.game_over?).to eql(true)
+    end
+    it "returns true if someone got 4 in a row horizontaly" do
+      game = Game.new
+      game.board.column1[3] = '☺'
+      game.board.column2[3] = '☺'
+      game.board.column3[3] = '☺' 
+      game.board.column4[3] = '☺'
+      expect(game.game_over?).to eql(true)
+    end
+  end
+end
 
 
