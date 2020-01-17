@@ -33,7 +33,7 @@ class Game
     @round = 1
     @board = Board.new
     @ans = '0'
-    
+    board.draw
   end
 
   def get_ans(player)
@@ -54,6 +54,27 @@ class Game
             board.column5[4], board.column6[4], board.column7[4]]
     row6 = [board.column1[5], board.column2[5], board.column3[5], board.column4[5], 
             board.column5[5], board.column6[5], board.column7[5]]
+    diagonal1 = [board.column1[2], board.column2[3], board.column3[4], board.column4[5]]
+    diagonal2 = [board.column1[1], board.column2[2], board.column3[3], board.column4[4],
+                 board.column5[5]]
+    diagonal3 = [board.column1[0], board.column2[1], board.column3[2], board.column4[3],
+                 board.column5[4], board.column6[5]]
+    diagonal4 = [board.column2[0], board.column3[1], board.column4[2], board.column5[3],
+                 board.column6[4], board.column7[5]]
+    diagonal5 = [board.column3[0], board.column4[1], board.column5[2], board.column6[3],
+                 board.column7[4]]
+    diagonal6 = [board.column4[0], board.column5[1], board.column6[2], board.column7[3]]
+    diagonal7 = [board.column7[2], board.column6[3], board.column5[4], board.column4[5]]
+    diagonal8 = [board.column7[1], board.column6[2], board.column5[3], board.column4[4],
+                 board.column3[5]]
+    diagonal9 = [board.column7[0], board.column6[1], board.column5[2], board.column4[3],
+                 board.column3[4], board.column2[5]]
+    diagonal10 =[board.column6[0], board.column5[1], board.column4[2], board.column3[3],
+                 board.column2[4], board.column1[5]]
+    diagonal11 =[board.column5[0], board.column4[1], board.column3[2], board.column2[3],
+                 board.column1[4]]
+    diagonal12 =[board.column4[0], board.column3[1], board.column2[2], board.column1[3]]
+
 
     if row1.join.include?("☻☻☻☻") || row1.join.include?("☺☺☺☺") ||
        row2.join.include?("☻☻☻☻") || row2.join.include?("☺☺☺☺") ||
@@ -67,7 +88,19 @@ class Game
        board.column4.join.include?("☻☻☻☻") || board.column4.join.include?("☺☺☺☺") ||
        board.column5.join.include?("☻☻☻☻") || board.column5.join.include?("☺☺☺☺") ||
        board.column6.join.include?("☻☻☻☻") || board.column6.join.include?("☺☺☺☺") ||
-       board.column7.join.include?("☻☻☻☻") || board.column7.join.include?("☺☺☺☺")
+       board.column7.join.include?("☻☻☻☻") || board.column7.join.include?("☺☺☺☺") ||
+       diagonal1.join.include?("☻☻☻☻") || diagonal1.join.include?("☺☺☺☺") ||
+       diagonal2.join.include?("☻☻☻☻") || diagonal2.join.include?("☺☺☺☺") ||
+       diagonal3.join.include?("☻☻☻☻") || diagonal3.join.include?("☺☺☺☺") ||
+       diagonal4.join.include?("☻☻☻☻") || diagonal4.join.include?("☺☺☺☺") ||
+       diagonal5.join.include?("☻☻☻☻") || diagonal5.join.include?("☺☺☺☺") ||
+       diagonal6.join.include?("☻☻☻☻") || diagonal6.join.include?("☺☺☺☺") ||
+       diagonal7.join.include?("☻☻☻☻") || diagonal7.join.include?("☺☺☺☺") ||
+       diagonal8.join.include?("☻☻☻☻") || diagonal8.join.include?("☺☺☺☺") ||
+       diagonal9.join.include?("☻☻☻☻") || diagonal9.join.include?("☺☺☺☺") ||
+       diagonal10.join.include?("☻☻☻☻") || diagonal10.join.include?("☺☺☺☺") ||
+       diagonal11.join.include?("☻☻☻☻") || diagonal11.join.include?("☺☺☺☺") ||
+       diagonal12.join.include?("☻☻☻☻") || diagonal12.join.include?("☺☺☺☺") 
       true
     else
       false
@@ -75,7 +108,8 @@ class Game
   end
 
   def play(ans='', n=0)
-    piece = ''
+    
+    
 
     if @round % 2 == 0
       player = '☻'
@@ -168,14 +202,27 @@ class Game
       puts
       play()
     end
-    board.draw
     @round += 1
     if game_over?
+      board.draw
       puts "Player #{player}  wins!"
       exit
     else
+      board.draw
       play()
     end
   end
 
 end
+
+game = Game.new
+game.play
+
+=begin
+
+       
+       
+       
+       
+       
+=end
